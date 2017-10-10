@@ -103,7 +103,7 @@ class ServiceIntegration(PluginBase):
 
     def post_receive(self, alert):
 
-        if alert.repeat:
+        if alert.repeat or alert.environment not in ["Production"] or alert.severity in ["info","normal"] or alert.status in ['closed']:
             return
 
         payload = self._slack_prepare_payload(alert)
