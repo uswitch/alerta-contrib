@@ -41,7 +41,9 @@ class Worker(object):
             sys.exit(1)
 
         try:
+            LOG.debug('Opening connection to: %s' % AWS_SQS_QUEUE)
             self.sqs = connection.create_queue(AWS_SQS_QUEUE)
+            LOG.debug('Connection opened')
             self.sqs.set_message_class(RawMessage)
         except boto.exception.SQSError as e:
             LOG.error('SQS: ERROR - %s' % e)
@@ -67,6 +69,7 @@ class Worker(object):
 
 
 def main():
+    LOG.debug('Starting SQS integration')
     try:
         Worker().run()
     except (SystemExit, KeyboardInterrupt):
